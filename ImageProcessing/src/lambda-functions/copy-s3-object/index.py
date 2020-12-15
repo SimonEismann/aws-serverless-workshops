@@ -59,7 +59,7 @@ def handler(event, context):
     prefix = event['ResourceProperties'].get('Prefix') or ''
     request_type = event.get('RequestType') or None
 
-    result = cfnresponse.SUCCESS
+    result = "SUCCESS"
 
     if request_type == None:
         cfnresponse.send(event, context, result, {})
@@ -71,7 +71,7 @@ def handler(event, context):
             result = delete_objects(bucket, prefix)
     except ClientError as e:
         logger.error('Error: %s', e)
-        result = cfnresponse.FAILED
+        result = "FAILED"
 
 
     cfnresponse.send(event, context, result, {})
@@ -79,7 +79,7 @@ def handler(event, context):
 
 def copy_objects(source_bucket, source_prefix, bucket, prefix):
     if source_bucket == None or bucket == None:
-        return cfnresponse.SUCCESS
+        return "SUCCESS"
 
     paginator = client.get_paginator('list_objects_v2')
     page_iterator = paginator.paginate(Bucket=source_bucket, Prefix=source_prefix)
@@ -92,12 +92,12 @@ def copy_objects(source_bucket, source_prefix, bucket, prefix):
     except KeyError as e:
         logger.error('Error: %s', e)
 
-    return cfnresponse.SUCCESS
+    return "SUCCESS"
 
 
 def delete_objects(bucket, prefix):
     if bucket == None:
-        return cfnresponse.SUCCESS
+        return "SUCCESS"
 
     versioning = client.get_bucket_versioning(Bucket=bucket)
     versioning_status = versioning.get('Status') or 'Disabled'
@@ -116,4 +116,4 @@ def delete_objects(bucket, prefix):
     if objects != None:
         client.delete_objects(Bucket=bucket, Delete={'Objects': objects})
 
-    return cfnresponse.SUCCESS
+    return "SUCCESS"
