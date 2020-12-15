@@ -62,7 +62,7 @@ def handler(event, context):
     result = "SUCCESS"
 
     if request_type == None:
-        cfnresponse.send(event, context, result, {})
+        send(event, context, result, {})
 
     try:
         if request_type == 'Create' or request_type == 'Update':
@@ -74,7 +74,7 @@ def handler(event, context):
         result = "FAILED"
 
 
-    cfnresponse.send(event, context, result, {})
+    send(event, context, result, {})
 
 
 def copy_objects(source_bucket, source_prefix, bucket, prefix):
