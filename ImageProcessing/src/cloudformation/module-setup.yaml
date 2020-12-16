@@ -296,7 +296,41 @@ Resources:
                 Action:
                   - "lambda:InvokeFunction"
                 Resource: "*"
-
+                
+  RiderPhotoProcessing:
+    Type: "AWS::StepFunctions::StateMachine"
+    Properties:
+      DefinitionString:
+        !Sub
+          - |-
+            {
+              "Comment": "Rider photo processing workflow",
+              "StartAt": "FaceDetection",
+              "States": {
+                "FaceDetection": {
+                  "Type": "Task",
+                  "Resource": "${FaceDetectionArn}",
+                  "ResultPath": "$.detectedFaceDetails",
+                  "End": true,
+                  "Catch": [
+                    {
+                      "ErrorEquals": [
+                        "PhotoDoesNotMeetRequirementError"
+                      ],
+                      "ResultPath": "$.errorInfo",
+                      "Next": "PhotoDoesNotMeetRequirement"
+                    }
+                  ]
+                },
+                "PhotoDoesNotMeetRequirement": {
+                  "Type": "Task",
+                  "Resource": "REPLACE_WITH_NotificationPlaceholderFunctionArn",
+                  "End": true
+                }
+              }
+            }
+          - {FaceDetectionArn: !GetAtt [ FaceDetectionFunction, Arn ], NotificationPlaceholderArn: !GetAtt [ NotificationPlaceholderFunction, Arn ]}
+      RoleArn: !GetAtt [ StateMachineRole, Arn ]
 
 Outputs:
   FaceDetectionFunctionArn:
