@@ -371,7 +371,7 @@ Resources:
                 },
                 "PersistMetadata": {
                   "Type": "Task",
-                  "Resource": "arn:aws:lambda:us-west-2:012345678912:function:wild-ryde-step-module-PersistMetadataFunction-9PDCT2DT7K70",
+                  "Resource": "${PersistMetadataArn}",
                   "ResultPath": null,
                   "End": true
                 }
