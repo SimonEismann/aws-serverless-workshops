@@ -272,32 +272,21 @@ Resources:
 
 
 
-  StateMachineRole:
-    Type: "AWS::IAM::Role"
+  APIGatewayToStepFunctionsRole:
+    Type: 'AWS::IAM::Role'
     Properties:
       AssumeRolePolicyDocument:
-        Version: "2012-10-17"
+        Version: '2012-10-17'
         Statement:
-          -
-            Effect: "Allow"
+          - Effect: Allow
             Principal:
               Service:
-                !Sub states.${AWS::Region}.amazonaws.com
+                - apigateway.amazonaws.com
             Action:
-              - "sts:AssumeRole"
-      Path: "/WildRydes/"
-      Policies:
-        -
-          PolicyName: "InvokeLambda"
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              -
-                Sid: "InvokeLambda"
-                Effect: "Allow"
-                Action:
-                  - "lambda:InvokeFunction"
-                Resource: "*"
+              - 'sts:AssumeRole'
+      Path: /
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AWSStepFunctionsFullAccess
                 
   RiderPhotoProcessing:
     Type: "AWS::StepFunctions::StateMachine"
