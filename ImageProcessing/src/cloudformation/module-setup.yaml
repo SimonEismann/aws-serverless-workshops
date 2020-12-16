@@ -185,6 +185,8 @@ Resources:
               - s3:GetObject
             Resource: !Sub "arn:aws:s3:::${RiderPhotoS3Bucket}/*"
       CodeUri: ../lambda-functions/thumbnail
+      Layers: 
+        - arn:aws:lambda:eu-west-1:796602223170:layer:image-magick:1
       Environment:
         Variables:
           THUMBNAIL_BUCKET: !Ref ThumbnailS3Bucket
