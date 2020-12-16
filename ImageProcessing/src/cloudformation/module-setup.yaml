@@ -324,7 +324,7 @@ Resources:
                 },
                 "PhotoDoesNotMeetRequirement": {
                   "Type": "Task",
-                  "Resource": "REPLACE_WITH_NotificationPlaceholderFunctionArn",
+                  "Resource": "${NotificationPlaceholderArn}",
                   "End": true
                 }
               }
