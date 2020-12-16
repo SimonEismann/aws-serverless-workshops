@@ -324,7 +324,7 @@ Resources:
                 },
                 "PhotoDoesNotMeetRequirement": {
                   "Type": "Task",
-                  "Resource": "${NotificationPlaceholderFunction}",
+                  "Resource": "${NotificationPlaceholderArn}",
                   "End": true
                 },
                 "CheckFaceDuplicate": {
