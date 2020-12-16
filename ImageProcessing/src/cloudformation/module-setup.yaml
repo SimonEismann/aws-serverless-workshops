@@ -311,7 +311,7 @@ Resources:
                   "Type": "Task",
                   "Resource": "${FaceDetectionArn}",
                   "ResultPath": "$.detectedFaceDetails",
-                  "End": true,
+                  "Next": "CheckFaceDuplicate",
                   "Catch": [
                     {
                       "ErrorEquals": [
@@ -324,27 +324,66 @@ Resources:
                 },
                 "PhotoDoesNotMeetRequirement": {
                   "Type": "Task",
-                  "Resource": "${NotificationPlaceholderArn}",
-                  "Next": "CheckFaceDuplicate"
+                  "Resource": "${NotificationPlaceholderFunction}",
+                  "End": true
+                },
+                "CheckFaceDuplicate": {
+                  "Type": "Task",
+                  "Resource": "${FaceSearchArn}",
+                  "ResultPath": null,
+                  "Next": "ParallelProcessing",
+                  "Catch": [
+                    {
+                      "ErrorEquals": [
+                        "FaceAlreadyExistsError"
+                      ],
+                      "ResultPath": "$.errorInfo",
+                      "Next": "PhotoDoesNotMeetRequirement"
+                    }
+                  ]
+                },
+                "ParallelProcessing": {
+                  "Type": "Parallel",
+                  "Branches": [
+                    {
+                      "StartAt": "AddFaceToIndex",
+                      "States": {
+                        "AddFaceToIndex": {
+                          "Type": "Task",
+                          "Resource": "${IndexFaceArn}",
+                          "End": true
+                        }
+                      }
+                    },
+                    {
+                      "StartAt": "Thumbnail",
+                      "States": {
+                        "Thumbnail": {
+                          "Type": "Task",
+                          "Resource": "${ThumbnailArn}",
+                          "End": true
+                        }
+                      }
+                    }
+                  ],
+                  "ResultPath": "$.parallelResult",
+                  "Next": "PersistMetadata"
+                },
+                "PersistMetadata": {
+                  "Type": "Task",
+                  "Resource": "arn:aws:lambda:us-west-2:012345678912:function:wild-ryde-step-module-PersistMetadataFunction-9PDCT2DT7K70",
+                  "ResultPath": null,
+                  "End": true
                 }
-              },
-              "CheckFaceDuplicate": {
-                "Type": "Task",
-                "Resource": "${FaceSearchArn}",
-                "ResultPath": null,
-                "End": true,
-                "Catch": [
-                  {
-                    "ErrorEquals": [
-                      "FaceAlreadyExistsError"
-                    ],
-                    "ResultPath": "$.errorInfo",
-                    "Next": "PhotoDoesNotMeetRequirement"
-                  }
-                ]
-              }	
-            }
-          - {FaceDetectionArn: !GetAtt [ FaceDetectionFunction, Arn ], NotificationPlaceholderArn: !GetAtt [ NotificationPlaceholderFunction, Arn ], FaceSearchArn: !GetAtt [ FaceSearchFunction, Arn ]}
+              }
+            }	
+          - {FaceDetectionArn: !GetAtt [ FaceDetectionFunction, Arn ], 
+          NotificationPlaceholderArn: !GetAtt [ NotificationPlaceholderFunction, Arn ], 
+          FaceSearchArn: !GetAtt [ FaceSearchFunction, Arn ],
+          IndexFaceArn: !GetAtt [ IndexFaceFunction, Arn ],
+          ThumbnailArn: !GetAtt [ ThumbnailFunction, Arn ],
+          PersistMetadataArn: !GetAtt [ PersistMetadataFunction, Arn ],
+          }
       RoleArn: !GetAtt [ StateMachineRole, Arn ]
 
 Outputs:
