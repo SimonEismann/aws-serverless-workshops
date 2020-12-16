@@ -325,11 +325,26 @@ Resources:
                 "PhotoDoesNotMeetRequirement": {
                   "Type": "Task",
                   "Resource": "${NotificationPlaceholderArn}",
-                  "End": true
+                  "Next": "CheckFaceDuplicate"
                 }
-              }
+              },
+              "CheckFaceDuplicate": {
+                "Type": "Task",
+                "Resource": "${FaceSearchArn}",
+                "ResultPath": null,
+                "End": true,
+                "Catch": [
+                  {
+                    "ErrorEquals": [
+                      "FaceAlreadyExistsError"
+                    ],
+                    "ResultPath": "$.errorInfo",
+                    "Next": "PhotoDoesNotMeetRequirement"
+                  }
+                ]
+              }	
             }
-          - {FaceDetectionArn: !GetAtt [ FaceDetectionFunction, Arn ], NotificationPlaceholderArn: !GetAtt [ NotificationPlaceholderFunction, Arn ]}
+          - {FaceDetectionArn: !GetAtt [ FaceDetectionFunction, Arn ], NotificationPlaceholderArn: !GetAtt [ NotificationPlaceholderFunction, Arn ], FaceSearchArn: !GetAtt [ FaceSearchFunction, Arn ]}
       RoleArn: !GetAtt [ StateMachineRole, Arn ]
 
 Outputs:
