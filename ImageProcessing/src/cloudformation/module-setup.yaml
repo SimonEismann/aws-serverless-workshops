@@ -312,7 +312,38 @@ Resources:
       Path: /
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AWSStepFunctionsFullAccess
-                
+   
+  APIGatewayToStepFunctions:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Description: APIGatewayToStepFunctions
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+      Name: APIGatewayToStepFunctions
+
+  APIGatewayToStepFunctionsRootMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: POST
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri: !Sub
+          - arn:aws:apigateway:${AWS::Region}:states:action/StartExecution
+          - stepArn: !GetAtt RiderPhotoProcessing.Arn
+      ResourceId: !GetAtt APIGatewayToStepFunctions.RootResourceId
+      RestApiId: !Ref APIGatewayToStepFunctions
+
+  APIGatewayToStepFunctionsDeployment:
+    Type: AWS::ApiGateway::Deployment
+    DependsOn:
+      - APIGatewayToStepFunctionsRootMethod
+    Properties:
+      RestApiId: !Ref APIGatewayToStepFunctions
+      StageName: execute
+      
   RiderPhotoProcessing:
     Type: "AWS::StepFunctions::StateMachine"
     Properties:
