@@ -330,6 +330,7 @@ Resources:
       Integration:
         IntegrationHttpMethod: POST
         Type: AWS
+        Credentials: !GetAtt APIGatewayToStepFunctionsRole.Arn
         Uri: !Sub
           - arn:aws:apigateway:${AWS::Region}:states:action/StartExecution
           - stepArn: !GetAtt RiderPhotoProcessing.Arn
