@@ -329,7 +329,7 @@ Resources:
       HttpMethod: POST
       Integration:
         IntegrationHttpMethod: POST
-        Type: AWS_PROXY
+        Type: AWS
         Uri: !Sub
           - arn:aws:apigateway:${AWS::Region}:states:action/StartExecution
           - stepArn: !GetAtt RiderPhotoProcessing.Arn
