@@ -436,7 +436,7 @@ Resources:
 
 Outputs:
   apiGatewayInvokeURL:
-    Value: !Sub https://${APIGatewayToStepFunctions}.execute-api.${AWS::Region}.amazonaws.com/
+    Value: !Sub https://${APIGatewayToStepFunctions}.execute-api.${AWS::Region}.amazonaws.com/execute/
   StateMachineArn:
     Value: !GetAtt RiderPhotoProcessing.Arn
   FaceDetectionFunctionArn:
