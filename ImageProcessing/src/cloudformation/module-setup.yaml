@@ -270,7 +270,32 @@ Resources:
         ../lambda-functions/copy-s3-object
     Type: AWS::Serverless::Function
 
-
+  StateMachineRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                !Sub states.${AWS::Region}.amazonaws.com
+            Action:
+              - "sts:AssumeRole"
+      Path: "/WildRydes/"
+      Policies:
+        -
+          PolicyName: "InvokeLambda"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Sid: "InvokeLambda"
+                Effect: "Allow"
+                Action:
+                  - "lambda:InvokeFunction"
+                Resource: "*"
 
   APIGatewayToStepFunctionsRole:
     Type: 'AWS::IAM::Role'
