@@ -435,6 +435,8 @@ Resources:
       RoleArn: !GetAtt [ StateMachineRole, Arn ]
 
 Outputs:
+  apiGatewayInvokeURL:
+    Value: !Sub https://${APIGatewayToStepFunctions}.execute-api.${AWS::Region}.amazonaws.com/
   FaceDetectionFunctionArn:
     Value: !GetAtt FaceDetectionFunction.Arn
   NotificationPlaceholderFunctionArn:
