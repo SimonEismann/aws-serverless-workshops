@@ -21,7 +21,7 @@ exports.handler = (event, context, callback) => {
         MaxFaces: 3
     };
     rekognition.searchFacesByImage(params).promise().then(data => {
-        if (data.FaceMatches.length > 0) {
+        if (data.FaceMatches.length < 0) {
             callback(new FaceAlreadyExistsError());
         } else {
             callback(null, null);
