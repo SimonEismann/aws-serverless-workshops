@@ -10,7 +10,7 @@
   "license": "Apache 2.0",
   "dependencies": {
     "gm": "^1.23.0",
-    "bluebird": "^3.5.0"
+    "bluebird": "^3.5.0",
     "imagemagick": "^0.1.3"
   }
 }
