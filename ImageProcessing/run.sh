@@ -24,9 +24,13 @@ STATEMACHINEARN=$(aws cloudformation describe-stacks --stack-name wildrydes --qu
 BUCKETNAME=$(aws cloudformation describe-stacks --stack-name wildrydes --query "Stacks[0].Outputs[8].OutputValue" --output text)
 
 #TODO Load
+echo "# Experiment: Starting..."
+java -jar httploadgenerator.jar loadgenerator > loadlogs.txt 2>&1 &
+./generateConstantLoad.sh 50 600
+sleep 10
+java -jar httploadgenerator.jar director --ip localhost --load load.csv -o results.csv --lua load.lua --randomize-users -t 128
+echo "# Experiment: Finished!"
 
-# Wait
-sleep 3
 
 # Shutdown
 aws cloudformation delete-stack --stack-name wildrydes
