@@ -17,6 +17,7 @@ aws cloudformation package \
       --s3-prefix ImageProcessing \
 		 --profile produser
 aws cloudformation deploy --template-file template.packaged.yaml --stack-name wildrydes --capabilities CAPABILITY_IAM --region eu-west-1 --profile produser
+cd ../..
 
 # Collect output
 APIURL=$(aws cloudformation describe-stacks --stack-name wildrydes --query "Stacks[0].Outputs[5].OutputValue" --output text)
