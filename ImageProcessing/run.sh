@@ -23,7 +23,7 @@ APIURL=$(aws cloudformation describe-stacks --stack-name wildrydes --query "Stac
 STATEMACHINEARN=$(aws cloudformation describe-stacks --stack-name wildrydes --query "Stacks[0].Outputs[7].OutputValue" --output text)
 BUCKETNAME=$(aws cloudformation describe-stacks --stack-name wildrydes --query "Stacks[0].Outputs[8].OutputValue" --output text)
 
-curl -X POST -d '{"input": "{\"userId\": \"user_a\", \"s3Bucket\":\"${BUCKETNAME}\", \"s3Key\": \"1_happy_face.jpg\"}", "stateMachineArn": "${STATEMACHINEARN}"}' $APIURL
+#TODO Load
 
 # Wait
 sleep 3
