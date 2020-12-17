@@ -22,9 +22,9 @@ aws cloudformation deploy --template-file template.packaged.yaml --stack-name wi
 APIURL=$(aws cloudformation describe-stacks --stack-name wildrydes --query "Stacks[0].Outputs[5].OutputValue" --output text)
 STATEMACHINEARN=$(aws cloudformation describe-stacks --stack-name wildrydes --query "Stacks[0].Outputs[7].OutputValue" --output text)
 BUCKETNAME=$(aws cloudformation describe-stacks --stack-name wildrydes --query "Stacks[0].Outputs[8].OutputValue" --output text)
-echo "test"
-echo 'curl -X POST -d \'{"input": "{\"userId\": \"user_a\", \"s3Bucket\":\"$BUCKETNAME\", \"s3Key\": \"1_happy_face.jpg\"}", "stateMachineArn": "$STATEMACHINEARN"}\' $APIURL'
-echo "test2"
+
+curl -X POST -d \'{"input": "{\"userId\": \"user_a\", \"s3Bucket\":\"$BUCKETNAME\", \"s3Key\": \"1_happy_face.jpg\"}", "stateMachineArn": "$STATEMACHINEARN"}' $APIURL
+
 # Wait
 echo "Press any key to tear down the application again"
 read -n 1 -s
