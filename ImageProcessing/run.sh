@@ -4,7 +4,7 @@ aws configure set profile produser
 aws rekognition create-collection --collection-id rider-photos --region eu-west-1
 aws s3 mb s3://wildrydesdeployment
 aws s3 mb s3://wild-rydes-sfn-module-us-west-2
-aws s3 sync ../../test-images s3://wild-rydes-sfn-module-us-west-2/test-images
+aws s3 sync /test-images s3://wild-rydes-sfn-module-us-west-2/test-images
 
 cd src/lambda-functions/thumbnail
 npm install
