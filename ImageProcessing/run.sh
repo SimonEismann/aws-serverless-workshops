@@ -22,7 +22,7 @@ aws cloudformation deploy --template-file template.packaged.yaml --stack-name wi
 APIURL=$(aws cloudformation describe-stacks --stack-name wildrydes --query "Stacks[0].Outputs[5].OutputValue" --output text)
 STATEMACHINEARN=$(aws cloudformation describe-stacks --stack-name wildrydes --query "Stacks[0].Outputs[7].OutputValue" --output text)
 BUCKETNAME=$(aws cloudformation describe-stacks --stack-name wildrydes --query "Stacks[0].Outputs[8].OutputValue" --output text)
-echo $APIURL
+echo 'curl -X POST -d \'{"input": "{\"userId\": \"user_a\", \"s3Bucket\":\"wildrydes-riderphotos3bucket-1vyy13wcy7fv\", \"s3Key\": \"1_happy_face.jpg\"}", "stateMachineArn": "arn:aws:states:eu-west-1:796602223170:stateMachine:RiderPhotoProcessing-gRgo3L7M6zaw"}\' https://1w1veryxp5.execute-api.eu-west-1.amazonaws.com/execute/'
 
 # Wait
 echo "Press any key to tear down the application again"
