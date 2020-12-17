@@ -334,8 +334,12 @@ Resources:
         Uri: !Sub
           - arn:aws:apigateway:${AWS::Region}:states:action/StartExecution
           - stepArn: !GetAtt RiderPhotoProcessing.Arn
+        IntegrationResponses: 
+          - StatusCode: 200
       ResourceId: !GetAtt APIGatewayToStepFunctions.RootResourceId
       RestApiId: !Ref APIGatewayToStepFunctions
+      MethodResponses: 
+        - StatusCode: 200
 
   APIGatewayToStepFunctionsDeployment:
     Type: AWS::ApiGateway::Deployment
