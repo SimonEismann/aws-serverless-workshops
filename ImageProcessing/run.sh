@@ -23,14 +23,16 @@ APIURL=$(aws cloudformation describe-stacks --stack-name wildrydes --query "Stac
 STATEMACHINEARN=$(aws cloudformation describe-stacks --stack-name wildrydes --query "Stacks[0].Outputs[7].OutputValue" --output text)
 BUCKETNAME=$(aws cloudformation describe-stacks --stack-name wildrydes --query "Stacks[0].Outputs[8].OutputValue" --output text)
 
-#TODO Load
-echo "# Experiment: Starting..."
+# Prep loadscript
+sed -i "s@URLPLACEHOLDER@$APIURL@g" load.lua
+sed -i "s@STATEMACHINEARNPLACEHOLDER@$STATEMACHINEARN@g" load.lua
+sed -i "s@BUCKETPLACEHOLDER@$BUCKETNAME@g" load.lua
+
+# Run Load
 java -jar httploadgenerator.jar loadgenerator > loadlogs.txt 2>&1 &
 ./generateConstantLoad.sh 50 600
 sleep 10
 java -jar httploadgenerator.jar director --ip localhost --load load.csv -o results.csv --lua load.lua --randomize-users -t 128
-echo "# Experiment: Finished!"
-
 
 # Shutdown
 aws cloudformation delete-stack --stack-name wildrydes
