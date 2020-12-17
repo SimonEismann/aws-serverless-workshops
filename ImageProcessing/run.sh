@@ -35,3 +35,4 @@ aws s3 rm s3://wildrydesdeployment --recursive
 aws rekognition delete-collection --collection-id rider-photos
 aws s3 rb s3://wildrydesdeployment
 aws s3 rb s3://wild-rydes-sfn-module-us-west-2
+
