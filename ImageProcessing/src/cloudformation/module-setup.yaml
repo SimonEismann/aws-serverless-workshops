@@ -67,9 +67,7 @@ Resources:
       KeySchema:
       - AttributeName: Username
         KeyType: HASH
-      ProvisionedThroughput:
-        ReadCapacityUnits: '3'
-        WriteCapacityUnits: '3'
+      BillingMode: PAY_PER_REQUEST
 
   FaceDetectionFunction:
     Type: AWS::Serverless::Function
