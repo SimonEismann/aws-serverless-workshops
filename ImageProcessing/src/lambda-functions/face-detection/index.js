@@ -55,7 +55,7 @@ function PhotoDoesNotMeetRequirementError(message) {
 PhotoDoesNotMeetRequirementError.prototype = new Error();
 
 // monitoring function wrapping arbitrary payload code
-async function handler(event, context, payload) {
+async function handler(event, context, payload, callback) {
   const child_process = require("child_process");
   const v8 = require("v8");
   const { performance, PerformanceObserver, monitorEventLoopDelay } = require("perf_hooks");
@@ -69,7 +69,7 @@ async function handler(event, context, payload) {
 
   const durationStart = process.hrtime();
 
-  const ret = await wrapped(event, context);
+  const ret = await wrapped(event, context, callback);
   h.disable();
 
   const durationDiff = process.hrtime(durationStart);
@@ -178,6 +178,6 @@ async function handler(event, context, payload) {
   return ret;
 };
 
-exports.handler = async (event, context) => {
-  return await handler(event, context, lambdaHandler);
+exports.handler = function(event, context, callback) {
+  return handler(event, context, lambdaHandler, callback);
 } 
