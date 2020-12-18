@@ -127,7 +127,7 @@ Resources:
             Effect: Allow
             Resource: !Sub "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${NotificationMetricsTable}"
 
-  NotificationsMetricsTable:
+  NotificationMetricsTable:
     Type: AWS::DynamoDB::Table
     Properties:
       TableName: NotificationMetrics
