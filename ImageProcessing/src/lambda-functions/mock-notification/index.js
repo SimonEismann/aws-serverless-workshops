@@ -1,6 +1,7 @@
 'use strict';
 
 const util = require('util');
+const AWS = require('aws-sdk');
 const { v4: uuidv4 } = require('uuid');
 
 const lambdaHandler = (event, context, callback) => {
