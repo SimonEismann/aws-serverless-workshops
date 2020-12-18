@@ -277,7 +277,7 @@ Resources:
     Properties:
       Description: "Save metadata of the photo to DynamoDB table"
       Handler: index.handler
-      Runtime: nodejs10.x
+      Runtime: nodejs12.x
       MemorySize: 256
       Timeout: 60
       Environment:
@@ -291,10 +291,26 @@ Resources:
             Action:
               -  dynamodb:PutItem
             Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${RiderPhotoDDBTable}"
+          -
+            Action: dynamodb:PutItem
+            Effect: Allow
+            Resource: !Sub "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${PersistMetadataTable}"
       CodeUri:
         ../lambda-functions/persist-metadata
     Type: AWS::Serverless::Function
 
+  PersistMetadataTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: PersistMetadataMetrics
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+          
   PopulateTestImages:
     Properties:
       ServiceToken: !GetAtt CopyS3ObjectsFunction.Arn
