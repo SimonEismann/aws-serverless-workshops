@@ -42,7 +42,7 @@ java -jar httploadgenerator.jar director --ip localhost --load load.csv -o resul
 git clone https://github.com/edasque/DynamoDBtoCSV.git
 cd DynamoDBtoCSV
 npm install
-node dynamoDBtoCSV.js -t long.ma.cancel-booking-metrics -v "{}" >../facedetection.csv
+node dynamoDBtoCSV.js -t long.ma.cancel-booking-metrics -v "{}" -r eu-west-1 >../facedetection.csv
 
 # Shutdown
 aws cloudformation delete-stack --stack-name wildrydes
