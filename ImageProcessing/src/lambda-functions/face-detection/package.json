@@ -6,6 +6,6 @@
   "author": "Long Bui",
   "license": "MIT",
   "dependencies": {
-    "uuid": "^8.1.0",
+    "uuid": "^8.1.0"
   }
 }
