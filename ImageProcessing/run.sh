@@ -8,6 +8,8 @@ aws s3 sync test-images s3://wild-rydes-sfn-module-us-west-2/test-images
 
 cd src/lambda-functions/thumbnail
 npm install
+cd ../face-detection
+npm install
 
 cd ../../cloudformation
 aws cloudformation package \
