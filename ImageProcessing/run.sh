@@ -42,6 +42,8 @@ java -jar httploadgenerator.jar director --ip localhost --load load.csv -o resul
 aws dynamodb scan --table-name long.ma.cancel-booking-metrics --query "Items[*].[duration.N,maxRss.N,fsRead.N,fsWrite.N,vContextSwitches.N,ivContextSwitches.N,userDiff.N,sysDiff.N,rss.N,heapTotal.N,heapUsed.N,external.N,elMin.N,elMax.N,elMean.N,elStd.N,bytecodeMetadataSize.N,heapPhysical.N,heapAvailable.N,heapLimit.N,mallocMem.N,netByRx.N,netPkgRx.N,netByTx.N,netPkgTx.N]" --output json | jq -r '.[] | @csv' > facedetection.csv
 cat facedetection.csv
 
+sleep 3000
+
 # Shutdown
 aws cloudformation delete-stack --stack-name wildrydes
 aws s3 rm s3://wild-rydes-sfn-module-us-west-2 --recursive
