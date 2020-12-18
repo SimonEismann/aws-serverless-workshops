@@ -37,7 +37,7 @@ sleep 10
 java -jar httploadgenerator.jar director --ip localhost --load load.csv -o results.csv --lua load.lua --randomize-users -t 12
 
 # Collect results
-sleep 60
+sleep 600
 chmod 777 fetchEvalMetrics
 ./fetchEvalMetrics
 mv long.ma.cancel-booking-metrics.csv facedetection.csv
