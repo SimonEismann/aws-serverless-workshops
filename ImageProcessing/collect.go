@@ -12,17 +12,7 @@ import (
 )
 
 func main() {
-	fetchResultData("long.ma.cancel-booking-metrics")
-	fetchResultData("long.ma.reserve-booking-metrics")
-	fetchResultData("long.ma.notify-booking-metrics")
-	fetchResultData("long.ma.confirm-booking-metrics")
-	fetchResultData("long.ma.capture-stripe-metrics")
-	fetchResultData("long.ma.charge-stripe-metrics")
-	fetchResultData("long.ma.refund-stripe-metrics")
-	fetchResultData("long.ma.collect-payment-metrics")
-	fetchResultData("long.ma.refund-payment-metrics")
-	fetchResultData("long.ma.loyalty-get-metrics")
-	fetchResultData("long.ma.loyalty-ingest-metrics")
+	fetchResultData("FaceDetectionMetrics")
 }
 
 func fetchResultData(tableName string) {
