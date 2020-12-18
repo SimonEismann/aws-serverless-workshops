@@ -14,6 +14,8 @@ cd ../mock-notification
 npm install
 cd ../face-search
 npm install
+cd ../index-face
+npm install
 
 cd ../../cloudformation
 aws cloudformation package \
