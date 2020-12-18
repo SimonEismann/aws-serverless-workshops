@@ -126,7 +126,7 @@ Resources:
     Properties:
       Description: "Use Amazon Rekognition to check if the face is already in the collection"
       Handler: index.handler
-      Runtime: nodejs10.x
+      Runtime: nodejs12.x
       MemorySize: 256
       Timeout: 60
       Policies:
@@ -143,12 +143,28 @@ Resources:
             Action:
               - rekognition:SearchFacesByImage
             Resource: "*"
+          -
+            Action: dynamodb:PutItem
+            Effect: Allow
+            Resource: !Sub "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${FaceSearchMetricsTable}"
       CodeUri:
         ../lambda-functions/face-search
       Environment:
         Variables:
           REKOGNITION_COLLECTION_ID: !Ref RekognitionCollectionID
 
+  FaceSearchMetricsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: FaceSearchMetrics
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+          
   IndexFaceFunction:
     Properties:
       Description: "Index the photo into Rekognition collection"
