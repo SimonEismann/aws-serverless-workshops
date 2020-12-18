@@ -16,6 +16,8 @@ cd ../face-search
 npm install
 cd ../index-face
 npm install
+cd ../persist-metadata
+npm install
 
 cd ../../cloudformation
 aws cloudformation package \
