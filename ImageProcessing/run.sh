@@ -10,6 +10,8 @@ cd src/lambda-functions/thumbnail
 npm install
 cd ../face-detection
 npm install
+cd ../face-search
+npm install
 
 cd ../../cloudformation
 aws cloudformation package \
