@@ -231,7 +231,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.handler
-      Runtime: nodejs10.x
+      Runtime: nodejs12.x
       MemorySize: 1536
       Timeout: 300
       Policies:
@@ -248,6 +248,10 @@ Resources:
             Action:
               - s3:GetObject
             Resource: !Sub "arn:aws:s3:::${RiderPhotoS3Bucket}/*"
+          -
+            Action: dynamodb:PutItem
+            Effect: Allow
+            Resource: !Sub "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${ThumbnailTable}"
       CodeUri: ../lambda-functions/thumbnail
       Layers: 
         - arn:aws:lambda:eu-west-1:796602223170:layer:image-magick:1
@@ -257,6 +261,18 @@ Resources:
           MAX_WIDTH: 300
           MAX_HEIGHT: 300
 
+  ThumbnailTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ThumbnailMetrics
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+          
   PersistMetadataFunction:
     Properties:
       Description: "Save metadata of the photo to DynamoDB table"
