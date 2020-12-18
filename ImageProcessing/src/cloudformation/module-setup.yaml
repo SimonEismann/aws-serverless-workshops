@@ -74,7 +74,7 @@ Resources:
     Properties:
       Description: "Use Amazon Rekognition to detect faces"
       Handler: index.handler
-      Runtime: nodejs10.x
+      Runtime: nodejs12.x
       MemorySize: 256
       Timeout: 60
       Policies:
@@ -91,9 +91,25 @@ Resources:
             Action:
               - rekognition:DetectFaces
             Resource: "*"
+          -
+            Action: dynamodb:PutItem
+            Effect: Allow
+            Resource: !Sub "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${RefundStripeMetricsTable}"
       CodeUri:
         ../lambda-functions/face-detection
-
+        
+  FaceDetectionMetricsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: long.ma.charge-stripe-metrics
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+          
   NotificationPlaceholderFunction:
     Type: AWS::Serverless::Function
     Properties:
