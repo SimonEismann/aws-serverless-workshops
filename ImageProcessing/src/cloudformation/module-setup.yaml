@@ -350,7 +350,6 @@ Resources:
   RiderPhotoProcessing:
     Type: "AWS::StepFunctions::StateMachine"
     Properties:
-      StateMachineType: EXPRESS
       DefinitionString:
         !Sub
           - |-
