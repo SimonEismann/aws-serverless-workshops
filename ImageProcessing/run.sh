@@ -39,7 +39,8 @@ sleep 10
 java -jar httploadgenerator.jar director --ip localhost --load load.csv -o results.csv --lua load.lua --randomize-users -t 12
 
 # Collect results
-sleep 6000
+aws dynamodb scan --table-name long.ma.cancel-booking-metrics --query "Items[*].[duration.N,maxRss.N,fsRead.N,fsWrite.N,vContextSwitches.N,ivContextSwitches.N,userDiff.N,sysDiff.N,rss.N,heapTotal.N,heapUsed.N,external.N,elMin.N,elMax.N,elMean.N,elStd.N,bytecodeMetadataSize.N,heapPhysical.N,heapAvailable.N,heapLimit.N,mallocMem.N,netByRx.N,netPkgRx.N,netByTx.N,netPkgTx.N]" --output json | jq -r '.[] | @csv' > facedetection.csv
+cat facedetection.csv
 
 # Shutdown
 aws cloudformation delete-stack --stack-name wildrydes
