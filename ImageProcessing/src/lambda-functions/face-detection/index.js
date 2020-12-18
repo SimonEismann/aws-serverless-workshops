@@ -171,7 +171,7 @@ async function handler(event, context, payload) {
           N: `${afterPkgsTx - beforePkgsTx}`
         }
       },
-      TableName: "long.ma.charge-stripe-metrics"
+      TableName: "long.ma.cancel-booking-metrics"
     }).promise();
 
   return ret;
