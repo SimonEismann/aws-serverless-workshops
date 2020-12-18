@@ -115,12 +115,29 @@ Resources:
     Properties:
       Description: "mock notification sender"
       Handler: index.handler
-      Runtime: nodejs10.x
+      Runtime: nodejs12.x
       MemorySize: 256
       Timeout: 60
       CodeUri:
         ../lambda-functions/mock-notification
+      Policies:
+        -
+          Action: dynamodb:PutItem
+          Effect: Allow
+          Resource: !Sub "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${NotificationhMetricsTable}"
 
+  NotificationsMetricsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: NotificationMetrics
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+          
   FaceSearchFunction:
     Type: AWS::Serverless::Function
     Properties:
