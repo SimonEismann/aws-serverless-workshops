@@ -35,6 +35,7 @@ chmod 777 generateConstantLoad.sh
 ./generateConstantLoad.sh 10 1
 sleep 10
 java -jar httploadgenerator.jar director --ip localhost --load load.csv -o results.csv --lua load.lua --randomize-users -t 12
+sleep 60
 
 # Shutdown
 aws cloudformation delete-stack --stack-name wildrydes
