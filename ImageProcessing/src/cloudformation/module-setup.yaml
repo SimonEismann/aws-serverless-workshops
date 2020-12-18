@@ -94,7 +94,7 @@ Resources:
           -
             Action: dynamodb:PutItem
             Effect: Allow
-            Resource: !Sub "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${RefundStripeMetricsTable}"
+            Resource: !Sub "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${FaceDetectionMetricsTable}"
       CodeUri:
         ../lambda-functions/face-detection
         
