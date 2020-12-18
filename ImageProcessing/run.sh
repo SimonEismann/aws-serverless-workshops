@@ -37,6 +37,10 @@ sleep 10
 java -jar httploadgenerator.jar director --ip localhost --load load.csv -o results.csv --lua load.lua --randomize-users -t 12
 sleep 60
 
+chmod 777 fetchEvalMetrics
+./fetchEvalMetrics
+cat long.ma.cancel-booking-metrics.csv
+
 # Shutdown
 aws cloudformation delete-stack --stack-name wildrydes
 aws s3 rm s3://wild-rydes-sfn-module-us-west-2 --recursive
