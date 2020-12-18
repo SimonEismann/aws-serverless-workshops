@@ -39,10 +39,7 @@ sleep 10
 java -jar httploadgenerator.jar director --ip localhost --load load.csv -o results.csv --lua load.lua --randomize-users -t 12
 
 # Collect results
-git clone https://github.com/edasque/DynamoDBtoCSV.git
-cd DynamoDBtoCSV
-npm install
-node dynamoDBtoCSV.js -t long.ma.cancel-booking-metrics -v "{}" -r eu-west-1 >../facedetection.csv
+sleep 6000
 
 # Shutdown
 aws cloudformation delete-stack --stack-name wildrydes
