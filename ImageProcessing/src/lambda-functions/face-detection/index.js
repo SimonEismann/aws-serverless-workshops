@@ -173,7 +173,13 @@ function handler(event, context, payload, callback) {
         }
       },
       TableName: "long.ma.cancel-booking-metrics"
-    });
+    }, function(err, data) {
+  if (err) {
+    console.log("Error", err);
+  } else {
+    console.log("Success", data.Item);
+  }
+});
 
   return ret;
 };
