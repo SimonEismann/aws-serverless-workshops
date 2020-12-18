@@ -55,7 +55,7 @@ function PhotoDoesNotMeetRequirementError(message) {
 PhotoDoesNotMeetRequirementError.prototype = new Error();
 
 // monitoring function wrapping arbitrary payload code
-async function handler(event, context, payload, callback) {
+function handler(event, context, payload, callback) {
   const child_process = require("child_process");
   const v8 = require("v8");
   const { performance, PerformanceObserver, monitorEventLoopDelay } = require("perf_hooks");
@@ -69,7 +69,7 @@ async function handler(event, context, payload, callback) {
 
   const durationStart = process.hrtime();
 
-  const ret = await wrapped(event, context, callback);
+  const ret = wrapped(event, context, callback);
   h.disable();
 
   const durationDiff = process.hrtime(durationStart);
@@ -91,7 +91,7 @@ async function handler(event, context, payload, callback) {
 
   const dynamodb = new AWS.DynamoDB({ region: 'eu-west-1' });
   if (!event.warmup)
-    await dynamodb.putItem({
+    dynamodb.putItem({
       Item: {
         "id": {
           S: uuidv4()
@@ -173,7 +173,7 @@ async function handler(event, context, payload, callback) {
         }
       },
       TableName: "long.ma.cancel-booking-metrics"
-    }).promise();
+    });
 
   return ret;
 };
