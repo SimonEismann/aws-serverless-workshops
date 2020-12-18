@@ -101,7 +101,7 @@ Resources:
   FaceDetectionMetricsTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: long.ma.charge-stripe-metrics
+      TableName: FaceDetectionMetrics
       BillingMode: PAY_PER_REQUEST
       AttributeDefinitions:
         - AttributeName: id
