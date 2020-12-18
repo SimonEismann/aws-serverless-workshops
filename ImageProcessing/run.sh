@@ -41,6 +41,7 @@ sleep 60
 chmod 777 fetchEvalMetrics
 ./fetchEvalMetrics
 mv long.ma.cancel-booking-metrics.csv facedetection.csv
+cat facedetection.csv
 
 # Shutdown
 aws cloudformation delete-stack --stack-name wildrydes
