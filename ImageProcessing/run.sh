@@ -4,7 +4,7 @@ export GIT_MERGE_AUTOEDIT=no
 git pull
 git checkout $EXP_BRANCH
 git pull
-git merge develop --no-edit
+git merge master --no-edit
 
 aws configure set profile produser
 aws rekognition create-collection --collection-id rider-photos --region eu-west-1
