@@ -45,7 +45,7 @@ do
 			echo $EXP_THREATS
 			echo $EXP_REPETITION
 			echo "---"
-			/run.sh
+			./run.sh
 		fi
 	done
 done
