@@ -1,7 +1,7 @@
 {
    "name":"1024MB",
    "branch":"1024MB",
-   "duration":180,
+   "duration":3,
    "load":10,
    "repetitions":1,
    "loadriverthreats":12
