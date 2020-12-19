@@ -45,6 +45,7 @@ do
 			echo $EXP_THREATS
 			echo $EXP_REPETITION
 			echo "---"
+			chmod 777 /aws-serverless-workshops/ImageProcessing/run.sh
 			./run.sh
 		fi
 	done
