@@ -1,5 +1,11 @@
 #!/bin/sh
 
+export GIT_MERGE_AUTOEDIT=no
+git pull
+git checkout $EXP_BRANCH
+git pull
+git merge develop --no-edit
+
 aws configure set profile produser
 aws rekognition create-collection --collection-id rider-photos --region eu-west-1
 aws s3 mb s3://wildrydesdeployment
@@ -42,9 +48,9 @@ sed -i "s@BUCKETPLACEHOLDER@$BUCKETNAME@g" load.lua
 # Run Load
 java -jar httploadgenerator.jar loadgenerator > loadlogs.txt 2>&1 &
 chmod 777 generateConstantLoad.sh
-./generateConstantLoad.sh 10 3
+./generateConstantLoad.sh $EXP_LOAD $EXP_DURATION
 sleep 10
-java -jar httploadgenerator.jar director --ip localhost --load load.csv -o results.csv --lua load.lua --randomize-users -t 12
+java -jar httploadgenerator.jar director --ip localhost --load load.csv -o results.csv --lua load.lua --randomize-users -t $EXP_THREATS
 
 # Collect results
 echo "duration,maxRss,fsRead,fsWrite,vContextSwitches,ivContextSwitches,userDiff,sysDiff,rss,heapTotal,heapUsed,external,elMin,elMax,elMean,elStd,bytecodeMetadataSize,heapPhysical,heapAvailable,heapLimit,mallocMem,netByRx,netPkgRx,netByTx,netPkgTx" > facedetection.csv
@@ -60,9 +66,15 @@ aws dynamodb scan --table-name ThumbnailMetrics --query "Items[*].[duration.N,ma
 echo "duration,maxRss,fsRead,fsWrite,vContextSwitches,ivContextSwitches,userDiff,sysDiff,rss,heapTotal,heapUsed,external,elMin,elMax,elMean,elStd,bytecodeMetadataSize,heapPhysical,heapAvailable,heapLimit,mallocMem,netByRx,netPkgRx,netByTx,netPkgTx" > persistmetadata.csv
 aws dynamodb scan --table-name PersistMetadataMetrics --query "Items[*].[duration.N,maxRss.N,fsRead.N,fsWrite.N,vContextSwitches.N,ivContextSwitches.N,userDiff.N,sysDiff.N,rss.N,heapTotal.N,heapUsed.N,external.N,elMin.N,elMax.N,elMean.N,elStd.N,bytecodeMetadataSize.N,heapPhysical.N,heapAvailable.N,heapLimit.N,mallocMem.N,netByRx.N,netPkgRx.N,netByTx.N,netPkgTx.N]" --output json | jq -r '.[] | @csv' >> persistmetadata.csv
 
-cat persistmetadata.csv
+# Move results
+mkdir -p /results/$EXP_NAME/Repetition_$EXP_REPETITION
+mv facedetection.csv /results/$EXP_NAME/Repetition_$EXP_REPETITION/facedetection.csv
+mv facesearch.csv /results/$EXP_NAME/Repetition_$EXP_REPETITION/facesearch.csv
+mv notification.csv /results/$EXP_NAME/Repetition_$EXP_REPETITION/notification.csv
+mv indexface.csv /results/$EXP_NAME/Repetition_$EXP_REPETITION/indexface.csv
+mv thumbnail.csv /results/$EXP_NAME/Repetition_$EXP_REPETITION/thumbnail.csv
+mv persistmetadata.csv /results/$EXP_NAME/Repetition_$EXP_REPETITION/persistmetadata.csv
 
-sleep 3000
 
 # Shutdown
 aws cloudformation delete-stack --stack-name wildrydes
@@ -71,4 +83,4 @@ aws s3 rm s3://wildrydesdeployment --recursive
 aws rekognition delete-collection --collection-id rider-photos
 aws s3 rb s3://wildrydesdeployment
 aws s3 rb s3://wild-rydes-sfn-module-us-west-2
-
+git stash --include-untracked
