@@ -78,9 +78,11 @@ mv persistmetadata.csv /results/$EXP_NAME/Repetition_$EXP_REPETITION/persistmeta
 
 # Shutdown
 aws cloudformation delete-stack --stack-name wildrydes
+aws cloudformation wait stack-delete-complete --stack-name wildrydes
 aws s3 rm s3://wild-rydes-sfn-module-us-west-2 --recursive
 aws s3 rm s3://wildrydesdeployment --recursive
 aws rekognition delete-collection --collection-id rider-photos
 aws s3 rb s3://wildrydesdeployment
 aws s3 rb s3://wild-rydes-sfn-module-us-west-2
 git stash --include-untracked
+
