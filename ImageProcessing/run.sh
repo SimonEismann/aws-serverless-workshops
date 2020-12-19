@@ -5,6 +5,7 @@ git pull
 git checkout $EXP_BRANCH
 git pull
 git merge master --no-edit
+git commit -m "automerge"
 
 aws configure set profile produser
 aws rekognition create-collection --collection-id rider-photos --region eu-west-1
