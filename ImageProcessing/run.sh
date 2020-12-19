@@ -5,6 +5,7 @@ git pull
 git checkout $EXP_BRANCH
 git pull
 git merge master --no-edit
+git add *
 git commit -m "automerge"
 
 aws configure set profile produser
